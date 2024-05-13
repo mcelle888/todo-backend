@@ -1,4 +1,4 @@
-package spring.project.todo.todoapp;
+package spring.project.todo.toDoList;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
