@@ -1,9 +1,8 @@
 package spring.project.todo.toDoList;
 
 import java.util.Date;
-import java.util.List;
 
-import jakarta.persistence.CascadeType;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -13,8 +12,9 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
-import spring.project.todo.ToDoItem.ToDoItems.ToDoItem;
+ 
 
+ 
 @Entity
 @Table(name = "to_do_list")
 public class ToDoList {
@@ -29,10 +29,7 @@ public class ToDoList {
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateCreated;
 
-    @OneToMany(mappedBy = "toDoList", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ToDoItem> items;
-
-    ToDoList() {
+    public ToDoList() {
     }
 
     public void setTitle(String title) {
@@ -41,10 +38,6 @@ public class ToDoList {
 
     public void setDateCreated(Date dateCreated) {
         this.dateCreated = dateCreated;
-    }
-
-    public void setItems(List<ToDoItem> items) {
-        this.items = items;
     }
 
     public Long getId() {
@@ -59,12 +52,8 @@ public class ToDoList {
         return dateCreated;
     }
 
-    public List<ToDoItem> getItems() {
-        return items;
-    }
-
     @Override
     public String toString() {
-        return "ToDoList [id=" + id + ", title=" + title + ", dateCreated=" + dateCreated + ", items=" + items + "]";
+        return "ToDoList [id=" + id + ", title=" + title + ", dateCreated=" + dateCreated + "]";
     }
 }

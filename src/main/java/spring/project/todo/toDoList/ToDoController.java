@@ -4,6 +4,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
+import spring.project.todo.ToDoItem.CreateItemDTO;
+import spring.project.todo.ToDoItem.ToDoItem;
 import spring.project.todo.exceptions.NotFoundException;
 
 import java.util.List;
@@ -65,5 +67,17 @@ public class ToDoController {
         Optional<ToDoList> maybeList = this.toDoListService.updateById(id, data);
         ToDoList updatedList = maybeList.orElseThrow(() -> new NotFoundException(ToDoList.class, id));
         return new ResponseEntity<>(updatedList, HttpStatus.OK);
+    }
+
+
+    // Add item to a list
+    @PostMapping("/{id}/add")
+    public ResponseEntity<ToDoItem> addItemToList(@PathVariable Long id, @Valid @RequestBody CreateItemDTO data)
+            throws NotFoundException {
+        Optional<ToDoList> maybeList = this.toDoListService.getById(id);
+        ToDoList list = maybeList.orElseThrow(() -> new NotFoundException(ToDoList.class, id));
+
+        ToDoItem createdItem = this.toDoListService.addItemToList(list, data);
+        return new ResponseEntity<>(createdItem, HttpStatus.CREATED);
     }
 }
