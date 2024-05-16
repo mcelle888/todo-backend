@@ -1,9 +1,14 @@
 package spring.project.todo.ToDoItem;
 
-import java.sql.Date;
+ 
+
+import java.util.Date;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -16,41 +21,33 @@ import spring.project.todo.toDoList.ToDoList;
 
 @Entity
 @Table(name = "to_do_items")
+@JsonIgnoreProperties({"toDoList"})
 public class ToDoItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
+    @Column(nullable = false)
     private String name;
 
-    @Column
+    @Column(nullable = false)
     private String description;
 
     @Temporal(TemporalType.DATE)
     private Date dueDate;
 
-    @ManyToOne
-    @JoinColumn(name = "to_do_list_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "to_do_list_id", nullable = false)
     private ToDoList toDoList;
 
     public ToDoItem() {
     }
 
-    public void setName(String name) {
+    public ToDoItem(String name, String description, Date dueDate, ToDoList toDoList) {
         this.name = name;
-    }
-
-    public void setDescription(String description) {
         this.description = description;
-    }
-
-    public void setDueDate(Date dueDate) {
         this.dueDate = dueDate;
-    }
-
-    public void setToDoList(ToDoList toDoList) {
         this.toDoList = toDoList;
     }
 
@@ -62,16 +59,32 @@ public class ToDoItem {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getDescription() {
         return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Date getDueDate() {
         return dueDate;
     }
 
+    public void setDueDate(Date dueDate) {
+        this.dueDate = dueDate;
+    }
+
     public ToDoList getToDoList() {
         return toDoList;
+    }
+
+    public void setToDoList(ToDoList toDoList) {
+        this.toDoList = toDoList;
     }
 
     @Override

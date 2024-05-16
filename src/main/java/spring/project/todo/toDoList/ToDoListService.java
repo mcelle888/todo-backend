@@ -72,10 +72,5 @@ public class ToDoListService {
 
     }
 
-     public ToDoItem addItemToList(ToDoList list, @Valid CreateItemDTO data) {
-        ToDoItem newItem = mapper.map(data, ToDoItem.class);
-        newItem.setToDoList(list);
-        return this.itemRepo.save(newItem);
-    }
 
 }

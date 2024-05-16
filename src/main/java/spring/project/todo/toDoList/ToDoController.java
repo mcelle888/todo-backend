@@ -71,13 +71,13 @@ public class ToDoController {
 
 
     // Add item to a list
-    @PostMapping("/{id}/add")
-    public ResponseEntity<ToDoItem> addItemToList(@PathVariable Long id, @Valid @RequestBody CreateItemDTO data)
-            throws NotFoundException {
-        Optional<ToDoList> maybeList = this.toDoListService.getById(id);
-        ToDoList list = maybeList.orElseThrow(() -> new NotFoundException(ToDoList.class, id));
+    // @PostMapping("/{id}/add")
+    // public ResponseEntity<ToDoItem> addItemToList(@PathVariable Long id, @Valid @RequestBody CreateItemDTO data)
+    //         throws NotFoundException {
+    //     Optional<ToDoList> maybeList = this.toDoListService.getById(id);
+    //     ToDoList list = maybeList.orElseThrow(() -> new NotFoundException(ToDoList.class, id));
 
-        ToDoItem createdItem = this.toDoListService.addItemToList(list, data);
-        return new ResponseEntity<>(createdItem, HttpStatus.CREATED);
-    }
+    //     ToDoItem createdItem = this.toDoListService.addItemToList(list, data);
+    //     return new ResponseEntity<>(createdItem, HttpStatus.CREATED);
+    // }
 }

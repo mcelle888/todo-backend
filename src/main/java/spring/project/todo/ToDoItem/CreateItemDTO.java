@@ -8,13 +8,13 @@ import jakarta.validation.constraints.NotBlank;
  
 
 public class CreateItemDTO {
-    @NotBlank(message = "Name is mandatory")
+    @NotBlank(message = "Name is required")
     private String name;
 
-    @NotBlank(message = "Description is mandatory")
+    @NotBlank(message = "Description is required")
     private String description;
 
-    @FutureOrPresent(message = "Due date must be in the present or future")
+    @FutureOrPresent(message = "Due date must be a future date")
     private Date dueDate;
 
     public String getName() {
