@@ -40,4 +40,37 @@ public class ToDoItemService {
         }
         return maybeList.get().getItems();
     }
+
+    public ToDoItem updateItem(Long listId, Long itemId, UpdateItemDTO data) throws NotFoundException {
+        Optional<ToDoList> maybeList = listRepo.findById(listId);
+        if (maybeList.isEmpty()) {
+            throw new NotFoundException(ToDoList.class, listId);
+        }
+
+        Optional<ToDoItem> maybeItem = itemRepo.findById(itemId);
+        if (maybeItem.isEmpty()) {
+            throw new NotFoundException(ToDoItem.class, itemId);
+        }
+
+        ToDoItem item = maybeItem.get();
+        item.setName(data.getName());
+        item.setDescription(data.getDescription());
+        item.setDueDate(data.getDueDate());
+
+        return itemRepo.save(item);
+    }
+
+    public void deleteItem(Long listId, Long itemId) throws NotFoundException {
+        Optional<ToDoList> maybeList = listRepo.findById(listId);
+        if (maybeList.isEmpty()) {
+            throw new NotFoundException(ToDoList.class, listId);
+        }
+
+        Optional<ToDoItem> maybeItem = itemRepo.findById(itemId);
+        if (maybeItem.isEmpty()) {
+            throw new NotFoundException(ToDoItem.class, itemId);
+        }
+
+        itemRepo.deleteById(itemId);
+    }
 }
