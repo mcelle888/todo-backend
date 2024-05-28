@@ -15,7 +15,7 @@ public class UpdateItemDTO {
     @FutureOrPresent(message = "Due date must be a future date")
     private Date dueDate;
 
-    private boolean done = false; 
+    private boolean done; 
 
     public String getName() {
         return name;

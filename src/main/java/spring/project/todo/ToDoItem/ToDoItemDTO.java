@@ -7,7 +7,7 @@ public class ToDoItemDTO {
     private String name;
     private String description;
     private Date dueDate;
-    private boolean done;  
+    private boolean done;
 
     public ToDoItemDTO() {
     }

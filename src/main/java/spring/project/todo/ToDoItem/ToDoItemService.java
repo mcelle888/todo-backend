@@ -6,9 +6,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import jakarta.transaction.Transactional;
- 
 import spring.project.todo.exceptions.NotFoundException;
 import spring.project.todo.toDoList.ToDoList;
 import spring.project.todo.toDoList.ToDoListRepo;

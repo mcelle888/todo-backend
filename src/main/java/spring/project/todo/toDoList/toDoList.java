@@ -1,19 +1,13 @@
 package spring.project.todo.toDoList;
 
 import java.util.Date;
-
+import java.util.List;
+import java.util.ArrayList;
 import spring.project.todo.ToDoItem.ToDoItem;
 import jakarta.persistence.*;
-import java.util.Date;
-import java.util.List;
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-import java.util.ArrayList;
 
 @Entity
 @Table(name = "to_do_list")
-@JsonIgnoreProperties({"items"})
 public class ToDoList {
 
     @Id
@@ -67,8 +61,7 @@ public class ToDoList {
     }
 
     public void addItem(ToDoItem item) {
-        // relationship with items
-        item.setToDoList(this); 
+        item.setToDoList(this);
         this.items.add(item);
     }
 
