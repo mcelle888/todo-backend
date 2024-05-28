@@ -2,6 +2,7 @@ package spring.project.todo.ToDoItem;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,7 +23,7 @@ public class ToDoItemService {
     @Autowired
     private ToDoListRepo listRepo;
 
-    public ToDoItem addItemToList(Long listId, CreateItemDTO data) throws NotFoundException {
+    public ToDoItemDTO addItemToList(Long listId, CreateItemDTO data) throws NotFoundException {
         Optional<ToDoList> maybeList = listRepo.findById(listId);
         if (maybeList.isEmpty()) {
             throw new NotFoundException(ToDoList.class, listId);
@@ -30,18 +31,21 @@ public class ToDoItemService {
         ToDoList list = maybeList.get();
 
         ToDoItem newItem = new ToDoItem(data.getName(), data.getDescription(), data.getDueDate(), list);
-        return itemRepo.save(newItem);
+        ToDoItem savedItem = itemRepo.save(newItem);
+        return convertToDTO(savedItem);
     }
 
-    public List<ToDoItem> getItemsByListId(Long listId) throws NotFoundException {
+    public List<ToDoItemDTO> getItemsByListId(Long listId) throws NotFoundException {
         Optional<ToDoList> maybeList = listRepo.findById(listId);
         if (maybeList.isEmpty()) {
             throw new NotFoundException(ToDoList.class, listId);
         }
-        return maybeList.get().getItems();
+        return maybeList.get().getItems().stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
     }
 
-    public ToDoItem updateItem(Long listId, Long itemId, UpdateItemDTO data) throws NotFoundException {
+    public ToDoItemDTO updateItem(Long listId, Long itemId, UpdateItemDTO data) throws NotFoundException {
         Optional<ToDoList> maybeList = listRepo.findById(listId);
         if (maybeList.isEmpty()) {
             throw new NotFoundException(ToDoList.class, listId);
@@ -57,7 +61,8 @@ public class ToDoItemService {
         item.setDescription(data.getDescription());
         item.setDueDate(data.getDueDate());
 
-        return itemRepo.save(item);
+        ToDoItem updatedItem = itemRepo.save(item);
+        return convertToDTO(updatedItem);
     }
 
     public void deleteItem(Long listId, Long itemId) throws NotFoundException {
@@ -72,5 +77,9 @@ public class ToDoItemService {
         }
 
         itemRepo.deleteById(itemId);
+    }
+
+    private ToDoItemDTO convertToDTO(ToDoItem item) {
+        return new ToDoItemDTO(item.getId(), item.getName(), item.getDescription(), item.getDueDate());
     }
 }

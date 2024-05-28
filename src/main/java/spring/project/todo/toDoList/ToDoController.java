@@ -4,8 +4,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
-import spring.project.todo.ToDoItem.CreateItemDTO;
-import spring.project.todo.ToDoItem.ToDoItem;
 import spring.project.todo.exceptions.NotFoundException;
 
 import java.util.List;
@@ -27,29 +25,29 @@ public class ToDoController {
     @Autowired
     private ToDoListService toDoListService;
 
-    // Post a new list
+    // create
     @PostMapping()
-    public ResponseEntity<ToDoList> createPost(@Valid @RequestBody CreateListDTO data) {
-        ToDoList createdList = this.toDoListService.createPost(data);
+    public ResponseEntity<ToDoListDTO> createPost(@Valid @RequestBody CreateListDTO data) {
+        ToDoListDTO createdList = this.toDoListService.createPost(data);
         return new ResponseEntity<>(createdList, HttpStatus.CREATED);
     }
 
-    // Get all lists
+    // get
     @GetMapping()
-    public ResponseEntity<List<ToDoList>> getAllLists() {
-        List<ToDoList> allLists = this.toDoListService.getAllLists();
+    public ResponseEntity<List<ToDoListDTO>> getAllLists() {
+        List<ToDoListDTO> allLists = this.toDoListService.getAllLists();
         return new ResponseEntity<>(allLists, HttpStatus.OK);
     }
 
-    // Get list by id
+    // get one by id
     @GetMapping("/{id}")
-    public ResponseEntity<ToDoList> getListById(@PathVariable Long id) throws NotFoundException {
-        Optional<ToDoList> maybeList = this.toDoListService.getById(id);
-        ToDoList foundList = maybeList.orElseThrow(() -> new NotFoundException(ToDoList.class, id));
-        return new ResponseEntity<>(foundList, HttpStatus.NOT_FOUND);
+    public ResponseEntity<ToDoListDTO> getListById(@PathVariable Long id) throws NotFoundException {
+        Optional<ToDoListDTO> maybeList = this.toDoListService.getById(id);
+        ToDoListDTO foundList = maybeList.orElseThrow(() -> new NotFoundException(ToDoList.class, id));
+        return new ResponseEntity<>(foundList, HttpStatus.OK);
     }
 
-    // Delete a list
+    // delete
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletePostById(@PathVariable Long id) throws NotFoundException {
         boolean isDeleted = this.toDoListService.deleteById(id);
@@ -59,25 +57,12 @@ public class ToDoController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    // Update a list
-
+    // update
     @PatchMapping("/{id}")
-    public ResponseEntity<ToDoList> updatePostById(@PathVariable Long id, @Valid @RequestBody UpdateToDoListDTO data)
+    public ResponseEntity<ToDoListDTO> updatePostById(@PathVariable Long id, @Valid @RequestBody UpdateToDoListDTO data)
             throws NotFoundException {
-        Optional<ToDoList> maybeList = this.toDoListService.updateById(id, data);
-        ToDoList updatedList = maybeList.orElseThrow(() -> new NotFoundException(ToDoList.class, id));
+        Optional<ToDoListDTO> maybeList = this.toDoListService.updateById(id, data);
+        ToDoListDTO updatedList = maybeList.orElseThrow(() -> new NotFoundException(ToDoList.class, id));
         return new ResponseEntity<>(updatedList, HttpStatus.OK);
     }
-
-
-    // Add item to a list
-    // @PostMapping("/{id}/add")
-    // public ResponseEntity<ToDoItem> addItemToList(@PathVariable Long id, @Valid @RequestBody CreateItemDTO data)
-    //         throws NotFoundException {
-    //     Optional<ToDoList> maybeList = this.toDoListService.getById(id);
-    //     ToDoList list = maybeList.orElseThrow(() -> new NotFoundException(ToDoList.class, id));
-
-    //     ToDoItem createdItem = this.toDoListService.addItemToList(list, data);
-    //     return new ResponseEntity<>(createdItem, HttpStatus.CREATED);
-    // }
 }
