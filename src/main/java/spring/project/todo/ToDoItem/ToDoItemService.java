@@ -30,9 +30,9 @@ public class ToDoItemService {
         }
         ToDoList list = maybeList.get();
 
-        ToDoItem newItem = new ToDoItem(data.getName(), data.getDescription(), data.getDueDate(), list);
+        ToDoItem newItem = new ToDoItem(data.getName(), data.getDescription(), data.getDueDate(), data.isDone(), list);
         ToDoItem savedItem = itemRepo.save(newItem);
-        return convertToDTO(savedItem);
+        return new ToDoItemDTO(savedItem);
     }
 
     public List<ToDoItemDTO> getItemsByListId(Long listId) throws NotFoundException {
@@ -41,45 +41,39 @@ public class ToDoItemService {
             throw new NotFoundException(ToDoList.class, listId);
         }
         return maybeList.get().getItems().stream()
-                .map(this::convertToDTO)
+                .map(ToDoItemDTO::new)
                 .collect(Collectors.toList());
     }
 
     public ToDoItemDTO updateItem(Long listId, Long itemId, UpdateItemDTO data) throws NotFoundException {
-        Optional<ToDoList> maybeList = listRepo.findById(listId);
-        if (maybeList.isEmpty()) {
-            throw new NotFoundException(ToDoList.class, listId);
-        }
-
         Optional<ToDoItem> maybeItem = itemRepo.findById(itemId);
         if (maybeItem.isEmpty()) {
             throw new NotFoundException(ToDoItem.class, itemId);
         }
-
         ToDoItem item = maybeItem.get();
+        if (!item.getToDoList().getId().equals(listId)) {
+            throw new NotFoundException(ToDoItem.class, itemId);
+        }
+
         item.setName(data.getName());
         item.setDescription(data.getDescription());
         item.setDueDate(data.getDueDate());
+        item.setDone(data.isDone());
 
         ToDoItem updatedItem = itemRepo.save(item);
-        return convertToDTO(updatedItem);
+        return new ToDoItemDTO(updatedItem);
     }
 
     public void deleteItem(Long listId, Long itemId) throws NotFoundException {
-        Optional<ToDoList> maybeList = listRepo.findById(listId);
-        if (maybeList.isEmpty()) {
-            throw new NotFoundException(ToDoList.class, listId);
-        }
-
         Optional<ToDoItem> maybeItem = itemRepo.findById(itemId);
         if (maybeItem.isEmpty()) {
             throw new NotFoundException(ToDoItem.class, itemId);
         }
+        ToDoItem item = maybeItem.get();
+        if (!item.getToDoList().getId().equals(listId)) {
+            throw new NotFoundException(ToDoItem.class, itemId);
+        }
 
-        itemRepo.deleteById(itemId);
-    }
-
-    private ToDoItemDTO convertToDTO(ToDoItem item) {
-        return new ToDoItemDTO(item.getId(), item.getName(), item.getDescription(), item.getDueDate());
+        itemRepo.delete(item);
     }
 }

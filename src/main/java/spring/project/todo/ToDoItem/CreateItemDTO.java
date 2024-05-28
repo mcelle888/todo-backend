@@ -6,7 +6,6 @@ import java.util.Date;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
  
-
 public class CreateItemDTO {
     @NotBlank(message = "Name is required")
     private String name;
@@ -16,6 +15,8 @@ public class CreateItemDTO {
 
     @FutureOrPresent(message = "Due date must be a future date")
     private Date dueDate;
+
+    private boolean done = false;  
 
     public String getName() {
         return name;
@@ -41,8 +42,18 @@ public class CreateItemDTO {
         this.dueDate = dueDate;
     }
 
+    public boolean isDone() {
+        return done;
+    }
+
+    public void setDone(boolean done) {
+        this.done = done;
+    }
+
     @Override
     public String toString() {
-        return "CreateItemDTO [name=" + name + ", description=" + description + ", dueDate=" + dueDate + "]";
+        return "CreateItemDTO [name=" + name + ", description=" + description + ", dueDate=" + dueDate + ", done="
+                + done + "]";
     }
 }
+

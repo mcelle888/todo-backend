@@ -51,7 +51,7 @@ public class ToDoListService {
 
     private ToDoListDTO convertToDTO(ToDoList list) {
         List<ToDoItemDTO> itemDTOs = list.getItems().stream()
-                .map(item -> new ToDoItemDTO(item.getId(), item.getName(), item.getDescription(), item.getDueDate()))
+                .map(item -> new ToDoItemDTO(item.getId(), item.getName(), item.getDescription(), item.getDueDate(), false))
                 .collect(Collectors.toList());
         return new ToDoListDTO(list.getId(), list.getTitle(), list.getDateCreated(), itemDTOs);
     }

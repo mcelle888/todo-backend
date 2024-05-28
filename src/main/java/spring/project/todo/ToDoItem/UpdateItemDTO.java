@@ -15,6 +15,8 @@ public class UpdateItemDTO {
     @FutureOrPresent(message = "Due date must be a future date")
     private Date dueDate;
 
+    private boolean done = false; 
+
     public String getName() {
         return name;
     }
@@ -39,8 +41,17 @@ public class UpdateItemDTO {
         this.dueDate = dueDate;
     }
 
+    public boolean isDone() {
+        return done;
+    }
+
+    public void setDone(boolean done) {
+        this.done = done;
+    }
+
     @Override
     public String toString() {
-        return "UpdateItemDTO [name=" + name + ", description=" + description + ", dueDate=" + dueDate + "]";
+        return "UpdateItemDTO [name=" + name + ", description=" + description + ", dueDate=" + dueDate + ", done="
+                + done + "]";
     }
 }

@@ -26,7 +26,7 @@ public class ToDoItemController {
     @Autowired
     private ToDoItemService toDoItemService;
 
-    //create
+    // create
     @PostMapping()
     public ResponseEntity<ToDoItemDTO> addItemToList(@PathVariable Long listId, @Valid @RequestBody CreateItemDTO data)
             throws NotFoundException {
@@ -34,14 +34,14 @@ public class ToDoItemController {
         return new ResponseEntity<>(createdItem, HttpStatus.CREATED);
     }
 
-    // get all items in one list
+    // get all items from list
     @GetMapping()
     public ResponseEntity<List<ToDoItemDTO>> getAllItems(@PathVariable Long listId) throws NotFoundException {
         List<ToDoItemDTO> items = this.toDoItemService.getItemsByListId(listId);
         return new ResponseEntity<>(items, HttpStatus.OK);
     }
 
-    // update an item in a list
+    // update item from list
     @PutMapping("/{itemId}")
     public ResponseEntity<ToDoItemDTO> updateItem(@PathVariable Long listId, @PathVariable Long itemId,
             @Valid @RequestBody UpdateItemDTO data) throws NotFoundException {
@@ -49,7 +49,7 @@ public class ToDoItemController {
         return new ResponseEntity<>(updatedItem, HttpStatus.OK);
     }
 
-    //delete
+    // delete item from list
     @DeleteMapping("/{itemId}")
     public ResponseEntity<Void> deleteItem(@PathVariable Long listId, @PathVariable Long itemId)
             throws NotFoundException {

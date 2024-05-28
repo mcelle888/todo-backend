@@ -21,7 +21,7 @@ import spring.project.todo.toDoList.ToDoList;
 
 @Entity
 @Table(name = "to_do_items")
-@JsonIgnoreProperties({"toDoList"})
+@JsonIgnoreProperties({ "toDoList" })
 public class ToDoItem {
 
     @Id
@@ -37,6 +37,9 @@ public class ToDoItem {
     @Temporal(TemporalType.DATE)
     private Date dueDate;
 
+    @Column(nullable = false)
+    private boolean done = false;  
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "to_do_list_id", nullable = false)
     private ToDoList toDoList;
@@ -44,10 +47,11 @@ public class ToDoItem {
     public ToDoItem() {
     }
 
-    public ToDoItem(String name, String description, Date dueDate, ToDoList toDoList) {
+    public ToDoItem(String name, String description, Date dueDate, boolean done, ToDoList toDoList) {
         this.name = name;
         this.description = description;
         this.dueDate = dueDate;
+        this.done = done;
         this.toDoList = toDoList;
     }
 
@@ -79,6 +83,14 @@ public class ToDoItem {
         this.dueDate = dueDate;
     }
 
+    public boolean isDone() {
+        return done;
+    }
+
+    public void setDone(boolean done) {
+        this.done = done;
+    }
+
     public ToDoList getToDoList() {
         return toDoList;
     }
@@ -89,6 +101,7 @@ public class ToDoItem {
 
     @Override
     public String toString() {
-        return "ToDoItem [id=" + id + ", name=" + name + ", description=" + description + ", dueDate=" + dueDate + "]";
+        return "ToDoItem [id=" + id + ", name=" + name + ", description=" + description + ", dueDate=" + dueDate
+                + ", done=" + done + "]";
     }
 }
