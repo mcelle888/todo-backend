@@ -9,7 +9,6 @@ public class UpdateItemDTO {
     @NotBlank(message = "Name is required")
     private String name;
 
-    @NotBlank(message = "Description is required")
     private String description;
 
     @FutureOrPresent(message = "Due date must be a future date")
