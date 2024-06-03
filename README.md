@@ -3,6 +3,7 @@
 API for To do List Application that allows users to create to-do lists and add, edit and remove items to a list.
 
 Front-end repo and documentation: [Link to repo](https://github.com/mcelle888/todo-frontend)
+
 Swagger API: [Link to Todo API docs](http://localhost:8080/swagger-ui/index.html)
 
 ## Tech Stack
