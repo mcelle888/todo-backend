@@ -8,16 +8,18 @@ public class ToDoItemDTO {
     private String description;
     private Date dueDate;
     private boolean done;
+    private Long toDoListId;
 
     public ToDoItemDTO() {
     }
 
-    public ToDoItemDTO(Long id, String name, String description, Date dueDate, boolean done) {
+    public ToDoItemDTO(Long id, String name, String description, Date dueDate, boolean done, Long toDoListId) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.dueDate = dueDate;
         this.done = done;
+        this.toDoListId = toDoListId;
     }
 
     public ToDoItemDTO(ToDoItem item) {
@@ -26,6 +28,7 @@ public class ToDoItemDTO {
         this.description = item.getDescription();
         this.dueDate = item.getDueDate();
         this.done = item.isDone();
+        this.toDoListId = item.getToDoList().getId();
     }
 
     public Long getId() {
@@ -68,9 +71,17 @@ public class ToDoItemDTO {
         this.done = done;
     }
 
+    public Long getToDoListId() {
+        return toDoListId;
+    }
+
+    public void setToDoListId(Long toDoListId) {
+        this.toDoListId = toDoListId;
+    }
+
     @Override
     public String toString() {
         return "ToDoItemDTO [id=" + id + ", name=" + name + ", description=" + description + ", dueDate=" + dueDate
-                + ", done=" + done + "]";
+                + ", done=" + done + ", toDoListId=" + toDoListId + "]";
     }
 }

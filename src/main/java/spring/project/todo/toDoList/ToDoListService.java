@@ -4,8 +4,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import jakarta.transaction.Transactional;
 import spring.project.todo.ToDoItem.ToDoItemDTO;
 
@@ -15,6 +18,9 @@ public class ToDoListService {
 
     @Autowired
     private ToDoListRepo listRepo;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     public ToDoListDTO createPost(CreateListDTO data) {
         ToDoList newList = new ToDoList(data.getTitle(), new Date());
@@ -49,8 +55,7 @@ public class ToDoListService {
 
     private ToDoListDTO convertToDTO(ToDoList list) {
         List<ToDoItemDTO> itemDTOs = list.getItems().stream()
-                .map(item -> new ToDoItemDTO(item.getId(), item.getName(), item.getDescription(), item.getDueDate(),
-                        item.isDone()))
+                .map(item -> modelMapper.map(item, ToDoItemDTO.class))
                 .collect(Collectors.toList());
         return new ToDoListDTO(list.getId(), list.getTitle(), list.getDateCreated(), itemDTOs);
     }

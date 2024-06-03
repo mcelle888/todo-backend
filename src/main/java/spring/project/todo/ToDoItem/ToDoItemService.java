@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import jakarta.transaction.Transactional;
@@ -21,6 +22,9 @@ public class ToDoItemService {
     @Autowired
     private ToDoListRepo listRepo;
 
+    @Autowired
+    private ModelMapper modelMapper;
+
     public ToDoItemDTO addItemToList(Long listId, CreateItemDTO data) throws NotFoundException {
         Optional<ToDoList> maybeList = listRepo.findById(listId);
         if (maybeList.isEmpty()) {
@@ -28,9 +32,10 @@ public class ToDoItemService {
         }
         ToDoList list = maybeList.get();
 
-        ToDoItem newItem = new ToDoItem(data.getName(), data.getDescription(), data.getDueDate(), data.isDone(), list);
+        ToDoItem newItem = modelMapper.map(data, ToDoItem.class);
+        newItem.setToDoList(list);
         ToDoItem savedItem = itemRepo.save(newItem);
-        return new ToDoItemDTO(savedItem);
+        return modelMapper.map(savedItem, ToDoItemDTO.class);
     }
 
     public List<ToDoItemDTO> getItemsByListId(Long listId) throws NotFoundException {
@@ -39,7 +44,7 @@ public class ToDoItemService {
             throw new NotFoundException(ToDoList.class, listId);
         }
         return maybeList.get().getItems().stream()
-                .map(ToDoItemDTO::new)
+                .map(item -> modelMapper.map(item, ToDoItemDTO.class))
                 .collect(Collectors.toList());
     }
 
@@ -53,13 +58,9 @@ public class ToDoItemService {
             throw new NotFoundException(ToDoItem.class, itemId);
         }
 
-        item.setName(data.getName());
-        item.setDescription(data.getDescription());
-        item.setDueDate(data.getDueDate());
-        item.setDone(data.isDone());
-
+        modelMapper.map(data, item);
         ToDoItem updatedItem = itemRepo.save(item);
-        return new ToDoItemDTO(updatedItem);
+        return modelMapper.map(updatedItem, ToDoItemDTO.class);
     }
 
     public void deleteItem(Long listId, Long itemId) throws NotFoundException {
