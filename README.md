@@ -2,6 +2,8 @@
 
 ### Change logs
 
-03/06/2024 {Refactoring boiletplate code}
+01/06/2024 {Refactoring boiletplate code and adding logging}
 
-- Added modalmapper to reduce manual mapping in the todoitems service to reduce boilerplate code.
+- Added modelmapper to reduce manual mapping in the todoitems service to reduce boilerplate code.
+- Added logging for requests using Log4j in the controller and service layer.
+
